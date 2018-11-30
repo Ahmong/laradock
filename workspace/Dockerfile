@@ -305,9 +305,11 @@ RUN if [ ${INSTALL_XDEBUG} = false -a ${INSTALL_BLACKFIRE} = true ]; then \
 ###########################################################################
 
 ARG INSTALL_WORKSPACE_SSH=false
+ARG SSH_ID_RSA_PUB=insecure_id_rsa.pub
 
 COPY insecure_id_rsa /tmp/id_rsa
-COPY insecure_id_rsa.pub /tmp/id_rsa.pub
+#COPY insecure_id_rsa.pub /tmp/id_rsa.pub
+COPY ${SSH_ID_RSA_PUB} /tmp/id_rsa.pub
 
 RUN if [ ${INSTALL_WORKSPACE_SSH} = true ]; then \
     rm -f /etc/service/sshd/down && \
@@ -894,7 +896,8 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm /var/log/lastlog /var/log/faillog
 
-USER laradock
+#USER laradock	#用此用户启动出错，改为用root启动。
+USER root
 
 # Set default work directory
 WORKDIR /var/www

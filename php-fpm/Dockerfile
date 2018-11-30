@@ -392,6 +392,16 @@ RUN if [ ${INSTALL_MYSQLI} = true ]; then \
     docker-php-ext-install mysqli \
 ;fi
 
+###########################################################################
+# xmlrpc:
+###########################################################################
+
+ARG INSTALL_XMLRPC=false
+
+RUN if [ ${INSTALL_XMLRPC} = true ]; then \
+    docker-php-ext-install xmlrpc \
+;fi
+
 
 ###########################################################################
 # Human Language and Character Encoding Support:
@@ -569,6 +579,10 @@ COPY ./laravel.ini /usr/local/etc/php/conf.d
 COPY ./xlaravel.pool.conf /usr/local/etc/php-fpm.d/
 
 USER root
+
+RUN apt-get install locales -y && \
+    locale-gen
+RUN localedef -c -i en_AU -f UTF-8 en_AU.UTF-8 || echo "en_AU.UTF-8 defined"
 
 # Clean up
 RUN apt-get clean && \
