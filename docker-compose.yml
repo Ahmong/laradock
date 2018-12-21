@@ -175,6 +175,7 @@ services:
         - FAKETIME=${PHP_FPM_FAKETIME}
       depends_on:
         - workspace
+        - ${DB_SERVER}
       networks:
         - backend
       links:
@@ -533,7 +534,7 @@ services:
       ports:
         - "${PMA_PORT}:80"
       depends_on:
-        - "${PMA_DB_ENGINE}"
+        - "${DB_SERVER}"
       networks:
         - frontend
         - backend
